@@ -15,6 +15,7 @@ hiltProjectLevel = "2.46"
 hiltAndroidCompiler = "2.46"
 kapt = "1.9.23"
 fragmentKtx = "1.6.2"
+swiperefreshlayout = "1.1.0"
 
 
 [libraries]
@@ -36,6 +37,7 @@ hiltAndroid = { module = "com.google.dagger:hilt-android", version.ref = "hilt" 
 hiltAndroidCompiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroidCompiler" }
 
 fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }
+swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swiperefreshlayout" }
 
 
 [plugins]

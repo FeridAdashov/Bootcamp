@@ -18,7 +18,15 @@ class UserManager private constructor() {
             }
         }
 
+        fun isLogged(): Boolean = preferenceManager?.getString(KEY_REFRESH_TOKEN, "")
+            .isNullOrBlank()
+
+        fun refreshToken(): String? {
+            return ""
+        }
+
 
         private const val KEY_SHARED_PREFERENCE = "KEY_SHARED_PREFERENCE"
+        private const val KEY_REFRESH_TOKEN = "KEY_REFRESH_TOKEN"
     }
 }

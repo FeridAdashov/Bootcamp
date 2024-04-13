@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Legalist</string>
+    <string name="app_name" translatable="false">Bootcamp</string>
     <string name="have_troubles">We have some troubles. Try later</string>
     <string name="no_internet">No internet connection</string>
     <string name="give_cellular_access_from_settings">Give access to use cellular data from settings</string>

@@ -3,10 +3,10 @@ package com.example.bootcamp.base
 import android.app.Application
 import android.content.Context
 import com.example.data.managers.UserManager
-//import dagger.hilt.android.HiltAndroidApp
+import dagger.hilt.android.HiltAndroidApp
 
 
-//@HiltAndroidApp
+@HiltAndroidApp
 class BaseApplication : Application() {
     init {
         instance = this

@@ -1,5 +1,3 @@
-import com.android.build.api.dsl.Packaging
-
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
@@ -44,6 +42,12 @@ android {
     hilt {
         enableAggregatingTask = false
     }
+
+
+    buildFeatures {
+        viewBinding = true
+        dataBinding = true
+    }
 }
 
 dependencies {
@@ -67,6 +71,7 @@ dependencies {
     implementation(libs.hiltAndroid)
     kapt(libs.hiltAndroidCompiler)
 
+    implementation(libs.swiperefreshlayout)
 
 
     testImplementation(libs.junit)
