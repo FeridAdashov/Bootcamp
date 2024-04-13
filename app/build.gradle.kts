@@ -1,6 +1,11 @@
+import com.android.build.api.dsl.Packaging
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.hiltProjectLevel)
+    alias(libs.plugins.navigation.safeargs)
 }
 
 android {
@@ -31,6 +36,14 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    kapt {
+        correctErrorTypes = true
+    }
+
+    hilt {
+        enableAggregatingTask = false
+    }
 }
 
 dependencies {
@@ -44,7 +57,15 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
 
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.dynamicFeatures.fragment)
 
+    implementation(libs.gson)
+    implementation(libs.fragment.ktx)
+
+
+    implementation(libs.hiltAndroid)
+    kapt(libs.hiltAndroidCompiler)
 
 
 
