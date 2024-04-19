@@ -73,6 +73,9 @@ dependencies {
 
     implementation(libs.swiperefreshlayout)
 
+    //Calendar view
+    implementation(libs.calendar.view.airsaid)
+    implementation(libs.calendar.view.material)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

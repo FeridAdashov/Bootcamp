@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:scrollbars="none">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:background="@color/white"
+            android:gravity="bottom|center"
+            android:orientation="vertical"
+            android:paddingStart="30dp"
+            android:paddingEnd="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:context=".ui.SignInFragment">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="80dp"
+                android:src="@drawable/app_logo"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilMobileNumber"
+                style="@style/Widget.AppTheme.TextInputLayoutList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:hint="@string/mobile_number_with_994"
+                app:boxStrokeColor="@color/gray2"
+                app:boxStrokeWidth="2dp"
+                app:hintTextColor="@color/buttonTextColor"
+                app:prefixTextColor="@color/buttonTextColor">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tieMobileNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:digits="0123456789"
+                    android:fontFamily="@font/sf_pro_display_regular"
+                    android:inputType="phone"
+                    android:maxLength="12"
+                    android:maxLines="1"
+                    android:textColor="@color/buttonTextColor"
+                    android:textSize="17sp"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.example.common.widgets.buttons.CustomRoundedButton
+                android:id="@+id/btnLogin"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimen16"
+                android:backgroundTint="@color/blue"
+                android:text="@string/login"
+                android:textColor="@color/white"
+                app:strokeWidth="0dp" />
+
+            <com.example.common.widgets.buttons.CustomRoundedButton
+                android:id="@+id/btnSignUp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimen16"
+                android:text="@string/sign_up"
+                android:textColor="@color/buttonTextColor"
+                app:strokeColor="@color/gray2"
+                app:strokeWidth="2dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/gray2" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen16"
+                    android:layout_marginEnd="@dimen/dimen16"
+                    android:fontFamily="@font/sf_pro_display_regular"
+                    android:text="@string/or"
+                    android:textColor="@color/gray"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/gray2" />
+            </LinearLayout>
+
+            <com.example.common.widgets.buttons.CustomRoundedButton
+                android:id="@+id/btnSignInApple"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimen16"
+                android:text="@string/sign_in_with_apple"
+                android:textColor="@color/buttonTextColor"
+                android:visibility="gone"
+                app:icon="@drawable/ic_apple"
+                app:iconSize="20dp"
+                app:iconTint="@null"
+                app:strokeColor="@color/gray2"
+                app:strokeWidth="2dp" />
+
+            <com.example.common.widgets.buttons.CustomRoundedButton
+                android:id="@+id/btnSignInGoogle"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimen16"
+                android:text="@string/sign_in_with_google"
+                android:textColor="@color/buttonTextColor"
+                android:visibility="gone"
+                app:icon="@drawable/ic_google"
+                app:iconSize="20dp"
+                app:iconTint="@null"
+                app:strokeColor="@color/gray2"
+                app:strokeWidth="2dp" />
+
+            <com.example.common.widgets.buttons.CustomRoundedButton
+                android:id="@+id/btnSignInFacebook"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/sign_in_with_facebook"
+                android:textColor="@color/buttonTextColor"
+                android:visibility="gone"
+                app:icon="@drawable/ic_facebook"
+                app:iconSize="20dp"
+                app:iconTint="@null"
+                app:strokeColor="@color/gray2"
+                app:strokeWidth="2dp" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvVersion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="42dp"
+                android:fontFamily="@font/sf_pro_display_medium"
+                android:text="@string/e_vekil_version"
+                android:textColor="@color/gray"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

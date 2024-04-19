@@ -1,7 +1,6 @@
 package com.example.bootcamp.ui.navigation
 
 import java.io.Serializable
-import java.util.*
 
 class TabHistory : Serializable {
 

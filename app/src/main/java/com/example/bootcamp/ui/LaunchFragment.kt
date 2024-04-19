@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import androidx.fragment.app.Fragment
 import com.example.bootcamp.R
 import com.example.bootcamp.base.BaseFragment
 import com.example.bootcamp.databinding.FragmentLaunchBinding
@@ -17,11 +16,6 @@ class LaunchFragment : BaseFragment(R.layout.fragment_launch) {
         get() = false
 
     private lateinit var binding: FragmentLaunchBinding
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

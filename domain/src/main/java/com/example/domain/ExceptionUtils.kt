@@ -1,4 +1,4 @@
-package com.example.data
+package com.example.domain
 
 import retrofit2.HttpException
 import java.net.ConnectException

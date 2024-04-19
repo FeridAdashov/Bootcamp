@@ -41,7 +41,10 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
 
-//    implementation(project(":common"))
+    //Api
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
+    implementation(libs.okhttp3.logginInterceptor)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

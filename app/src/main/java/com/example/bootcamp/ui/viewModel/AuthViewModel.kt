@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.domain.entity.BaseEntity
 import com.example.domain.entity.RequestResult
+import com.example.domain.entity.mapToBaseEntity
 import com.example.domain.interactors.AuthInteractor
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,27 +22,33 @@ class AuthViewModelProvider(private val interactor: AuthInteractor) :
 
 class AuthViewModel(private val authInteractor: AuthInteractor) : BaseViewModel() {
 
-    private var loginWithPhoneLiveData = MutableStateFlow<RequestResult<BaseEntity>?>(null)
+    private var _authState =
+        MutableStateFlow<AuthScreenState>(AuthScreenState.InitialState)
 
-    fun loginWithPhoneLiveData(): StateFlow<RequestResult<BaseEntity>?> =
-        loginWithPhoneLiveData
+    fun authState(): StateFlow<AuthScreenState> = _authState
 
 
     private var mLoginWithPhoneJob: Job? = null
 
     fun loginWithPhone(phoneNumber: String) {
+        _authState.value = AuthScreenState.LoadingState
+
         mLoginWithPhoneJob?.cancel()
         mLoginWithPhoneJob = sendRequest({ authInteractor.loginWithPhone(phoneNumber) }, {
-            loginWithPhoneLiveData.postValue(it)
+            when (it) {
+                is RequestResult.Error -> _authState.value =
+                    AuthScreenState.ErrorState(it.mapToBaseEntity())
+
+                is RequestResult.Success -> _authState.value =
+                    AuthScreenState.LoginWithPhoneResult(it.body)
+            }
         })
     }
-
 }
 
 sealed class AuthScreenState {
-    data object InitialState : FactScreenState()
-    data object LoadingState : FactScreenState()
-    data class ResultStateFact(val fact: FactEntity) : FactScreenState()
-    data class ResultStateBoard(val boardEntity: BoredEntity) : FactScreenState()
-    data class ErrorState(val message: String) : FactScreenState()
+    data object InitialState : AuthScreenState()
+    data object LoadingState : AuthScreenState()
+    data class LoginWithPhoneResult(val baseEntity: BaseEntity) : AuthScreenState()
+    data class ErrorState(val entity: BaseEntity) : AuthScreenState()
 }

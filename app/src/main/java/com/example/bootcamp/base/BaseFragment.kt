@@ -29,7 +29,7 @@ abstract class BaseFragment(private val layoutId: Int) : Fragment(layoutId), Bas
 //            showProgress()
 //            mMainViewModel.refreshToken(mUserManager.refreshToken()!!)
         } else {
-//            findNavController().navigate(R.id.action_to_signInFragment)
+            findNavController().navigate(R.id.action_to_signInFragment)
         }
     }
 
