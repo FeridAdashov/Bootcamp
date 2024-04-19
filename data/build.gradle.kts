@@ -36,12 +36,18 @@ android {
 }
 
 dependencies {
+    implementation(project(":domain"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
 
     implementation(libs.gson)
+
+    //Api
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
+    implementation(libs.okhttp3.logginInterceptor)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
