@@ -6,7 +6,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-interface RetrofitService {
+interface AuthService {
     @POST("v1/auth/login/")
     suspend fun loginWithPhone(@Body body: LoginWithPhoneRequest): Response<BaseResponse>
 }

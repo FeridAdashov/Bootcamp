@@ -7,8 +7,6 @@ import com.example.domain.entity.RequestResult
 import com.example.domain.entity.mapToBaseEntity
 import com.example.domain.interactors.AuthInteractor
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 
 class AuthViewModelProvider(private val interactor: AuthInteractor) :
     ViewModelProvider.Factory {
@@ -20,35 +18,51 @@ class AuthViewModelProvider(private val interactor: AuthInteractor) :
     }
 }
 
+//@HiltViewModel
+//class AuthViewModel @Inject constructor(private val authInteractor: AuthInteractor) : BaseViewModel() {
+
 class AuthViewModel(private val authInteractor: AuthInteractor) : BaseViewModel() {
-
-    private var _authState =
-        MutableStateFlow<AuthScreenState>(AuthScreenState.InitialState)
-
-    fun authState(): StateFlow<AuthScreenState> = _authState
-
 
     private var mLoginWithPhoneJob: Job? = null
 
     fun loginWithPhone(phoneNumber: String) {
-        _authState.value = AuthScreenState.LoadingState
+        _commonState.tryEmit(ScreenState.Loading)
 
         mLoginWithPhoneJob?.cancel()
         mLoginWithPhoneJob = sendRequest({ authInteractor.loginWithPhone(phoneNumber) }, {
-            when (it) {
-                is RequestResult.Error -> _authState.value =
-                    AuthScreenState.ErrorState(it.mapToBaseEntity())
+            _commonState.tryEmit(ScreenState.Initial)
 
-                is RequestResult.Success -> _authState.value =
-                    AuthScreenState.LoginWithPhoneResult(it.body)
+            when (it) {
+                is RequestResult.Error -> {
+                    _commonState.tryEmit(ScreenState.Error(it.mapToBaseEntity()))
+                }
+
+                is RequestResult.Success -> _screenState.value =
+                    ScreenState.Result(SignInScreenState.LoginWithPhoneResult(it.body))
+            }
+        })
+    }
+
+    fun loginWithGmail(gmailAccount: String) {
+        _commonState.tryEmit(ScreenState.Loading)
+
+        mLoginWithPhoneJob?.cancel()
+        mLoginWithPhoneJob = sendRequest({ authInteractor.loginWithGmail(gmailAccount) }, {
+            _commonState.tryEmit(ScreenState.Initial)
+
+            when (it) {
+                is RequestResult.Error -> {
+                    _commonState.tryEmit(ScreenState.Error(it.mapToBaseEntity()))
+                }
+
+                is RequestResult.Success -> _screenState.value =
+                    ScreenState.Result(SignInScreenState.LoginWithGmailResult(it.body))
             }
         })
     }
 }
 
-sealed class AuthScreenState {
-    data object InitialState : AuthScreenState()
-    data object LoadingState : AuthScreenState()
-    data class LoginWithPhoneResult(val baseEntity: BaseEntity) : AuthScreenState()
-    data class ErrorState(val entity: BaseEntity) : AuthScreenState()
+sealed class SignInScreenState {
+    data class LoginWithPhoneResult(val baseEntity: BaseEntity) : SignInScreenState()
+    data class LoginWithGmailResult(val baseEntity: BaseEntity) : SignInScreenState()
 }

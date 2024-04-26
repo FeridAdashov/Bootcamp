@@ -1,6 +1,6 @@
 package com.example.data.repositories
 
-import com.example.data.api.RetrofitService
+import com.example.data.api.AuthService
 import com.example.data.dto.request.LoginWithPhoneRequest
 import com.example.data.dto.response.BaseResponse
 import com.example.data.mappers.AuthMapper
@@ -8,7 +8,7 @@ import com.example.domain.entity.BaseEntity
 import com.example.domain.repositories.AuthRepository
 
 class AuthRepositoryImpl(
-    private val apiService: RetrofitService,
+    private val apiService: AuthService,
     private val authMapper: AuthMapper,
 ) : AuthRepository {
 

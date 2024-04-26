@@ -6,6 +6,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import com.example.bootcamp.R
 import com.example.bootcamp.databinding.ActivityMainBinding
 import com.example.bootcamp.ui.navigation.TabManager
@@ -14,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    lateinit var mainActivityMainBinding: ActivityMainBinding
+    private lateinit var mainActivityMainBinding: ActivityMainBinding
     val tabManager: TabManager by lazy { TabManager(this, mainActivityMainBinding) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,5 +51,9 @@ class MainActivity : AppCompatActivity() {
         mainActivityMainBinding.fabBottomMenuAdd.setOnClickListener {
             tabManager.openSearchPageForAddBooking()
         }
+    }
+
+    fun setBaseProgressBarVisibility(boolean: Boolean) {
+        mainActivityMainBinding.baseProgressBar.isVisible = boolean
     }
 }

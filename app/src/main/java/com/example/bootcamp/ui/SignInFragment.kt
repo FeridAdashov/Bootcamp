@@ -2,10 +2,12 @@ package com.example.bootcamp.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import androidx.core.widget.doOnTextChanged
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.example.bootcamp.R
@@ -13,13 +15,18 @@ import com.example.bootcamp.base.BaseFragment
 import com.example.bootcamp.databinding.FragmentSignInBinding
 import com.example.bootcamp.ui.viewModel.AuthViewModel
 import com.example.bootcamp.ui.viewModel.AuthViewModelProvider
+import com.example.bootcamp.ui.viewModel.BaseViewModel
+import com.example.bootcamp.ui.viewModel.SignInScreenState
 import com.example.common.extensions.hideKeyboard
 import com.example.common.utils.CommonUtils
 import com.example.data.managers.UserManager
-import com.example.domain.Constants
+import com.example.data.repositories.AuthRepositoryImpl
 import com.example.domain.entity.BaseEntity
+import com.example.domain.entity.RequestResult
 import com.example.domain.interactors.AuthInteractor
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -29,6 +36,8 @@ class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
         get() = "Sign In Fragment"
     override val withBottomBar: Boolean
         get() = false
+    override val viewModel: BaseViewModel
+        get() = mAuthViewModel
 
     @Inject
     lateinit var mAuthInteractor: AuthInteractor
@@ -39,6 +48,9 @@ class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
             AuthViewModelProvider(mAuthInteractor)
         }
     )
+
+//    @Inject
+//    lateinit var mAuthViewModel: AuthViewModel
 
     private var phone = ""
 
@@ -118,47 +130,20 @@ class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
     }
 
     private fun initViewModel() {
-        fun errorHappened(it: BaseEntity) {
-            hideProgress()
-
-            when (it.code) {
-                Constants.UNAUTHORIZED_EXCEPTION -> showDialogWithAction(
-                    getString(R.string.error),
-                    mAuthViewModel.getErrorMessage(requireContext(), it)
-                )
-
-                Constants.UNKNOWN_ERROR -> Log.d(
-                    "${Constants.COMMON_TAG}: $TAG",
-                    it.message.toString()
-                )
-
-                else -> showDialogWithAction(
-                    getString(R.string.error),
-                    mAuthViewModel.getErrorMessage(requireContext(), it)
-                )
-            }
-        }
-
-        mAuthViewModel.loginWithPhoneLiveData().observe(viewLifecycleOwner) { baseEntity ->
-            hideProgress()
-
-            if (baseEntity is RequestResult.Success) {
-                when (baseEntity.code) {
-                    200 -> {
-                        findNavController().navigate(
-                            R.id.action_signInFragment_to_otpFragment,
-                            Bundle().apply { putString("phone", phone) })
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                mAuthViewModel.screenState().collectLatest {
+                    if (it is BaseViewModel.ScreenState.Result<*> && it.data is SignInScreenState) {
+                        when (it.data) {
+                            is SignInScreenState.LoginWithPhoneResult -> {
+                                findNavController().navigate(
+                                    R.id.action_signInFragment_to_otpFragment,
+                                    Bundle().apply { putString("phone", phone) })
+                            }
+                        }
                     }
-
-                    else -> showSnackBar(
-                        mAuthViewModel.getErrorMessage(
-                            requireContext(),
-                            baseEntity.body
-                        )
-                    )
                 }
-            } else if (baseEntity is RequestResult.Error)
-                errorHappened(BaseEntity(baseEntity.code, baseEntity.message))
+            }
         }
     }
 }

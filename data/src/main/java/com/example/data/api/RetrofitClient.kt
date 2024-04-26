@@ -1,64 +1,81 @@
 package com.example.data.api
 
-import com.example.data.Constants
+import android.content.Context
 import com.example.data.interceptors.HeadersInterceptor
+import com.example.data.interceptors.makeLoggingInterceptor
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
+import java.io.InputStream
+import java.security.GeneralSecurityException
+import java.security.KeyManagementException
+import java.security.KeyStore
+import java.security.KeyStoreException
+import java.security.NoSuchAlgorithmException
 import java.security.SecureRandom
+import java.security.cert.Certificate
+import java.security.cert.CertificateException
+import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
+import java.util.Arrays
 import java.util.concurrent.TimeUnit
 import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.TrustManager
+import javax.net.ssl.TrustManagerFactory
 import javax.net.ssl.X509TrustManager
 
 object RetrofitClient {
 
-    var service: RetrofitService? = null
 
-    var mOkHttpClient: OkHttpClient = OkHttpClient()
+    private var mOkHttpClient: OkHttpClient = OkHttpClient()
 
-    fun makeRetrofitService(
-        isDebug: Boolean,
-    ): RetrofitService {
-        val dispatcher = Dispatcher()
-        dispatcher.maxRequests = 1
-        dispatcher.maxRequestsPerHost = 1
-        val okHttpClientBuilder = makeOkHttpClientBuilder()
+    fun <T> makeRetrofitService(context: Context, baseUrl: String, mClass: Class<T>): T {
+        val okHttpClientBuilder = makeSecureHttpBuilder(context)
 
-        okHttpClientBuilder.apply {
-            dispatcher(dispatcher)
-            addInterceptor(HeadersInterceptor())
-            addInterceptor(makeLoggingInterceptor(isDebug))
-        }
-        service =
-            makeRetrofit(
-                okHttpClientBuilder.build(),
-                makeGson()
-            ).create(RetrofitService::class.java)
-        return service!!
+        return makeRetrofit(okHttpClientBuilder.build(), makeGson(), baseUrl)
+            .create(mClass)
     }
 
-    private fun makeRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
+    fun makeSecureHttpBuilder(context: Context): OkHttpClient.Builder {
+        val okHttpClientBuilder = makeOkHttpClientBuilder(context)
+        disableSSLCheck(okHttpClientBuilder)
+        return okHttpClientBuilder
+    }
+
+    private fun makeRetrofit(okHttpClient: OkHttpClient, gson: Gson, baseUrl: String): Retrofit {
         mOkHttpClient = okHttpClient
         return Retrofit.Builder()
-            .baseUrl(Constants.BASE_URL)
+            .baseUrl(baseUrl)
             .client(mOkHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
 
-    private fun makeOkHttpClientBuilder(): OkHttpClient.Builder {
-        return disableSSLCheck(
-            OkHttpClient.Builder()
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(10, TimeUnit.SECONDS)
-        )
+    private fun makeDispatcher(): Dispatcher {
+        return Dispatcher().apply {
+            maxRequests = 3
+            maxRequestsPerHost = 1
+        }
+    }
+
+    private fun makeOkHttpClientBuilder(context: Context): OkHttpClient.Builder {
+        return OkHttpClient.Builder()
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .addInterceptor(makeLoggingInterceptor())
+            .addInterceptor(HeadersInterceptor())
+            .dispatcher(makeDispatcher())
+    }
+
+    private fun makeGson(): Gson {
+        return GsonBuilder()
+            .setLenient()
+            .create()
     }
 
     private fun disableSSLCheck(builder: OkHttpClient.Builder): OkHttpClient.Builder {
@@ -91,20 +108,5 @@ object RetrofitClient {
         } catch (e: Exception) {
             throw RuntimeException(e)
         }
-    }
-
-    private fun makeGson(): Gson {
-        return GsonBuilder()
-            .setLenient()
-            .create()
-    }
-
-    private fun makeLoggingInterceptor(isDebug: Boolean): HttpLoggingInterceptor {
-        val logging = HttpLoggingInterceptor()
-        logging.level = if (isDebug)
-            HttpLoggingInterceptor.Level.BODY
-        else
-            HttpLoggingInterceptor.Level.NONE
-        return logging
     }
 }

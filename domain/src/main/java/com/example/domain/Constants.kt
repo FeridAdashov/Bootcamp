@@ -3,6 +3,8 @@ package com.example.domain
 import java.net.HttpURLConnection
 
 object Constants {
+    const val COMMON_TAG = "TAG_USER_APP"
+
     const val UNKNOWN_ERROR = 0
     const val SOCKET_EXCEPTION = 1
     const val SOCKET_TIMEOUT_EXCEPTION = 2
