@@ -20,6 +20,7 @@ retrofit = "2.9.0"
 okhttp3 = "4.9.3"
 airsaid_calendarview = "1.0.3"
 material_calendarview = "1.6.0"
+otp_view = "v1.1.2-ktx"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -49,6 +50,7 @@ okhttp3-logginInterceptor = { module = "com.squareup.okhttp3:logging-interceptor
 calendar-view-airsaid = { module = "com.github.airsaid:calendarview", version.ref = "airsaid_calendarview" }
 calendar-view-material = { module = "com.github.prolificinteractive:material-calendarview", version.ref = "material_calendarview" }
 
+otp-view = { module = "com.github.aabhasr1:OtpView", version.ref = "otp_view" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

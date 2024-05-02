@@ -2,12 +2,14 @@ package com.example.bootcamp.base
 
 import android.os.Bundle
 import android.util.Log
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.bootcamp.R
+import com.example.bootcamp.listener.SimpleClickListener
 import com.example.bootcamp.ui.viewModel.BaseViewModel
 import com.example.data.managers.UserManager
 import com.example.domain.Constants
@@ -32,7 +34,6 @@ abstract class BaseFragment(layoutId: Int) : Fragment(layoutId), BaseFragmentLis
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         initObservers()
     }
 
@@ -62,7 +63,7 @@ abstract class BaseFragment(layoutId: Int) : Fragment(layoutId), BaseFragmentLis
         }
     }
 
-    private fun setProgressBarVisibility(boolean: Boolean) {
+    protected fun setProgressBarVisibility(boolean: Boolean) {
         mBaseActivity.setBaseProgressBarVisibility(boolean)
     }
 
@@ -70,7 +71,7 @@ abstract class BaseFragment(layoutId: Int) : Fragment(layoutId), BaseFragmentLis
         if (UserManager.isLogged() && !UserManager.refreshToken().isNullOrEmpty()) {
 //            mMainViewModel.refreshToken(mUserManager.refreshToken()!!)
         } else {
-            findNavController().navigate(R.id.action_to_signInFragment)
+            findNavController().navigate(R.id.action_global_signInFragment)
         }
     }
 
@@ -91,5 +92,40 @@ abstract class BaseFragment(layoutId: Int) : Fragment(layoutId), BaseFragmentLis
                 viewModel.getErrorMessage(requireContext(), it)
             )
         }
+    }
+
+    fun showDialogWithAction(
+        title: String,
+        description: String,
+        positiveClickListener: SimpleClickListener? = null,
+        negativeClickListener: SimpleClickListener? = null,
+        cancelable: Boolean = true,
+        positiveBtnTitle: String = getString(R.string.OK),
+        negativeBtnTitle: String = getString(R.string.cancel),
+    ) {
+        mBaseActivity.showDialogWithAction(
+            title,
+            description,
+            positiveClickListener,
+            negativeClickListener,
+            cancelable,
+            positiveBtnTitle,
+            negativeBtnTitle
+        )
+    }
+
+    fun showErrorDialog(
+        title: String = getString(R.string.warning),
+        description: String = getString(R.string.have_troubles)
+    ) {
+        showDialogWithAction(title, description)
+    }
+
+    fun showSnackBar(
+        message: String?,
+        @StringRes actionTitle: Int? = null,
+        action: (() -> Unit)? = null
+    ) {
+        mBaseActivity.showSnackBar(message, actionTitle, action = action)
     }
 }

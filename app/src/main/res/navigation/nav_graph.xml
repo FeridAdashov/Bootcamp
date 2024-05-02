@@ -10,4 +10,26 @@
         android:name="com.example.bootcamp.ui.LaunchFragment"
         android:label="Launch Fragment"
         tools:layout="@layout/fragment_launch" />
+
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.example.bootcamp.ui.SignInFragment"
+        android:label="SignInFragment"
+        tools:layout="@layout/fragment_sign_in">
+
+        <action
+            android:id="@+id/action_signInFragment_to_otpFragment"
+            app:destination="@id/otpFragment" />
+    </fragment>
+
+    <action
+        android:id="@+id/action_global_signInFragment"
+        app:destination="@id/signInFragment" />
+
+    <fragment
+        android:id="@+id/otpFragment"
+        android:name="com.example.bootcamp.ui.OtpFragment"
+        android:label="OtpFragment"
+        tools:layout="@layout/fragment_otp" />
+
 </navigation>

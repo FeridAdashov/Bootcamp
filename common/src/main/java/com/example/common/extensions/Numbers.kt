@@ -1,4 +1,4 @@
-package com.legalist.userapp.common.extensions
+package com.example.common.extensions
 
 import android.content.Context
 import kotlin.math.round

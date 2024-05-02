@@ -7,6 +7,7 @@ import android.view.View
 import com.example.bootcamp.R
 import com.example.bootcamp.base.BaseFragment
 import com.example.bootcamp.databinding.FragmentLaunchBinding
+import com.example.bootcamp.ui.viewModel.BaseViewModel
 
 
 class LaunchFragment : BaseFragment(R.layout.fragment_launch) {
@@ -14,6 +15,9 @@ class LaunchFragment : BaseFragment(R.layout.fragment_launch) {
         get() = "Launch Fragment"
     override val withBottomBar: Boolean
         get() = false
+
+    override val viewModel: BaseViewModel
+        get() = BaseViewModel()
 
     private lateinit var binding: FragmentLaunchBinding
 
@@ -31,12 +35,5 @@ class LaunchFragment : BaseFragment(R.layout.fragment_launch) {
         binding.swipeToRefresh.setOnRefreshListener {
             checkLogin()
         }
-    }
-
-    companion object {
-
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) = LaunchFragment()
-
     }
 }

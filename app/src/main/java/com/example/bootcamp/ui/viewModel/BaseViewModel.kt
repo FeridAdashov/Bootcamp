@@ -2,6 +2,7 @@ package com.example.bootcamp.ui.viewModel
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.bootcamp.R
 import com.example.domain.Constants
 import com.example.domain.entity.BaseEntity
@@ -33,6 +34,15 @@ open class BaseViewModel : ViewModel() {
             getData.invoke(call.invoke())
         }
     }
+
+    fun launchWithIO(block: suspend () -> Unit) = viewModelScope.launch(Dispatchers.IO) {
+        block.invoke()
+    }
+
+    fun launchWithMain(block: suspend () -> Unit) = viewModelScope.launch(Dispatchers.Main) {
+        block.invoke()
+    }
+
 
     fun getErrorMessage(context: Context, info: BaseEntity): String {
         return when (info.code) {

@@ -14,8 +14,15 @@ android {
         applicationId = "com.example.bootcamp"
         minSdk = 24
         targetSdk = 34
+        versionName = "1.0.0"
+        versionCode = 1
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        externalNativeBuild {
+            cmake {
+                cppFlags += ""
+            }
+        }
     }
 
     buildTypes {
@@ -48,6 +55,12 @@ android {
         viewBinding = true
         dataBinding = true
     }
+    externalNativeBuild {
+        cmake {
+            path = file("src/main/cpp/CMakeLists.txt")
+            version = "3.22.1"
+        }
+    }
 }
 
 dependencies {
@@ -74,7 +87,7 @@ dependencies {
     implementation(libs.swiperefreshlayout)
 
     //Calendar view
-    implementation(libs.calendar.view.airsaid)
+//    implementation(libs.calendar.view.airsaid)
     implementation(libs.calendar.view.material)
 
     testImplementation(libs.junit)

@@ -26,15 +26,21 @@ class AuthViewModel(private val authInteractor: AuthInteractor) : BaseViewModel(
     private var mLoginWithPhoneJob: Job? = null
 
     fun loginWithPhone(phoneNumber: String) {
-        _commonState.tryEmit(ScreenState.Loading)
+        launchWithIO {
+            _commonState.emit(ScreenState.Loading)
+        }
 
         mLoginWithPhoneJob?.cancel()
         mLoginWithPhoneJob = sendRequest({ authInteractor.loginWithPhone(phoneNumber) }, {
-            _commonState.tryEmit(ScreenState.Initial)
+            launchWithIO {
+                _commonState.emit(ScreenState.Initial)
+            }
 
             when (it) {
                 is RequestResult.Error -> {
-                    _commonState.tryEmit(ScreenState.Error(it.mapToBaseEntity()))
+                    launchWithIO {
+                        _commonState.emit(ScreenState.Error(it.mapToBaseEntity()))
+                    }
                 }
 
                 is RequestResult.Success -> _screenState.value =

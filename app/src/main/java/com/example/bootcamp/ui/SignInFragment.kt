@@ -2,6 +2,7 @@ package com.example.bootcamp.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import androidx.core.widget.doOnTextChanged
@@ -20,9 +21,6 @@ import com.example.bootcamp.ui.viewModel.SignInScreenState
 import com.example.common.extensions.hideKeyboard
 import com.example.common.utils.CommonUtils
 import com.example.data.managers.UserManager
-import com.example.data.repositories.AuthRepositoryImpl
-import com.example.domain.entity.BaseEntity
-import com.example.domain.entity.RequestResult
 import com.example.domain.interactors.AuthInteractor
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -101,7 +99,7 @@ class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
                 }
             }
 
-            tvVersion.text = getString(R.string.e_vekil_version) + " " + BuildConfig.VERSION_NAME
+            tvVersion.text = getString(R.string.e_vekil_version) //+ " " + BuildConfig.VERSION_NAME
 
             btnLogin.setOnClickListener {
                 val phoneEdt = tieMobileNumber.text.toString()
@@ -109,13 +107,12 @@ class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
                     phone = "994" + phoneEdt.replace(" ", "")
 
                     requireContext().hideKeyboard(tieMobileNumber)
-                    showProgress()
                     mAuthViewModel.loginWithPhone(phone)
                 } else tieMobileNumber.error = getString(R.string.fill_the_field)
             }
 
             btnSignUp.setOnClickListener {
-                findNavController().navigate(R.id.action_signInFragment_to_signUpFragment)
+//                findNavController().navigate(R.id.action_signInFragment_to_signUpFragment)
             }
 
             btnSignInApple.setOnClickListener {
@@ -136,10 +133,13 @@ class SignInFragment : BaseFragment(R.layout.fragment_sign_in) {
                     if (it is BaseViewModel.ScreenState.Result<*> && it.data is SignInScreenState) {
                         when (it.data) {
                             is SignInScreenState.LoginWithPhoneResult -> {
+                                Log.d("DDDDDD", it.data.baseEntity.toString())
                                 findNavController().navigate(
                                     R.id.action_signInFragment_to_otpFragment,
                                     Bundle().apply { putString("phone", phone) })
                             }
+
+                            is SignInScreenState.LoginWithGmailResult -> {}
                         }
                     }
                 }

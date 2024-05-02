@@ -1,6 +1,5 @@
 package com.example.data.api
 
-import android.content.Context
 import com.example.data.interceptors.HeadersInterceptor
 import com.example.data.interceptors.makeLoggingInterceptor
 import com.google.gson.Gson
@@ -9,24 +8,12 @@ import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.IOException
-import java.io.InputStream
-import java.security.GeneralSecurityException
-import java.security.KeyManagementException
-import java.security.KeyStore
-import java.security.KeyStoreException
-import java.security.NoSuchAlgorithmException
 import java.security.SecureRandom
-import java.security.cert.Certificate
-import java.security.cert.CertificateException
-import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
-import java.util.Arrays
 import java.util.concurrent.TimeUnit
 import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.TrustManager
-import javax.net.ssl.TrustManagerFactory
 import javax.net.ssl.X509TrustManager
 
 object RetrofitClient {
@@ -34,15 +21,15 @@ object RetrofitClient {
 
     private var mOkHttpClient: OkHttpClient = OkHttpClient()
 
-    fun <T> makeRetrofitService(context: Context, baseUrl: String, mClass: Class<T>): T {
-        val okHttpClientBuilder = makeSecureHttpBuilder(context)
+    fun <T> makeRetrofitService(baseUrl: String, mClass: Class<T>): T {
+        val okHttpClientBuilder = makeSecureHttpBuilder()
 
         return makeRetrofit(okHttpClientBuilder.build(), makeGson(), baseUrl)
             .create(mClass)
     }
 
-    fun makeSecureHttpBuilder(context: Context): OkHttpClient.Builder {
-        val okHttpClientBuilder = makeOkHttpClientBuilder(context)
+    fun makeSecureHttpBuilder(): OkHttpClient.Builder {
+        val okHttpClientBuilder = makeOkHttpClientBuilder()
         disableSSLCheck(okHttpClientBuilder)
         return okHttpClientBuilder
     }
@@ -63,7 +50,7 @@ object RetrofitClient {
         }
     }
 
-    private fun makeOkHttpClientBuilder(context: Context): OkHttpClient.Builder {
+    private fun makeOkHttpClientBuilder(): OkHttpClient.Builder {
         return OkHttpClient.Builder()
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
