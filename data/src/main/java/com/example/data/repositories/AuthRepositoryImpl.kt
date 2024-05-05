@@ -2,9 +2,14 @@ package com.example.data.repositories
 
 import com.example.data.api.AuthService
 import com.example.data.dto.request.LoginWithPhoneRequest
+import com.example.data.dto.request.RefreshTokenRequest
 import com.example.data.dto.response.BaseResponse
+import com.example.data.dto.response.ConfirmOtpResponse
+import com.example.data.dto.response.RefreshTokenResponse
 import com.example.data.mappers.AuthMapper
 import com.example.domain.entity.BaseEntity
+import com.example.domain.entity.ConfirmOtpEntity
+import com.example.domain.entity.RefreshTokenEntity
 import com.example.domain.repositories.AuthRepository
 
 class AuthRepositoryImpl(
@@ -43,4 +48,42 @@ class AuthRepositoryImpl(
             ) { authMapper.toBaseEntity(it) }
         }
     }
+
+    override suspend fun confirmOtp(
+        params: HashMap<String, String>
+    ): ConfirmOtpEntity {
+        return requestInsideCatch {
+            val response = apiService.confirmOtp(params)
+
+            return@requestInsideCatch generateResultEntity(
+                ConfirmOtpResponse::class.java,
+                response
+            ) { authMapper.toConfirmOtpEntity(it) }
+        }
+    }
+
+    override suspend fun confirmRegisterOtp(
+        params: HashMap<String, String>
+    ): ConfirmOtpEntity {
+        return requestInsideCatch {
+            val response = apiService.confirmRegisterOtp(params)
+
+            return@requestInsideCatch generateResultEntity(
+                ConfirmOtpResponse::class.java,
+                response
+            ) { authMapper.toConfirmOtpEntity(it) }
+        }
+    }
+
+    override suspend fun getRefreshToken(refreshToken: String): RefreshTokenEntity {
+        return requestInsideCatch {
+            val response = apiService.getRefreshToken(RefreshTokenRequest(refreshToken))
+
+            return@requestInsideCatch generateResultEntity(
+                RefreshTokenResponse::class.java,
+                response
+            ) { authMapper.toRefreshTokenEntity(it) }
+        }
+    }
+
 }

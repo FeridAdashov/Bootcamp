@@ -11,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.bootcamp.R
 import com.example.bootcamp.listener.SimpleClickListener
 import com.example.bootcamp.ui.viewModel.BaseViewModel
-import com.example.data.managers.UserManager
 import com.example.domain.Constants
 import com.example.domain.entity.BaseEntity
 import dagger.hilt.android.AndroidEntryPoint
@@ -67,20 +66,11 @@ abstract class BaseFragment(layoutId: Int) : Fragment(layoutId), BaseFragmentLis
         mBaseActivity.setBaseProgressBarVisibility(boolean)
     }
 
-    fun checkLogin() {
-        if (UserManager.isLogged() && !UserManager.refreshToken().isNullOrEmpty()) {
-//            mMainViewModel.refreshToken(mUserManager.refreshToken()!!)
-        } else {
-            findNavController().navigate(R.id.action_global_signInFragment)
-        }
-    }
-
     private fun errorHappened(it: BaseEntity) {
         when (it.code) {
-            Constants.UNAUTHORIZED_EXCEPTION -> showDialogWithAction(
-                getString(R.string.error),
-                viewModel.getErrorMessage(requireContext(), it)
-            )
+            Constants.UNAUTHORIZED_EXCEPTION -> {
+                findNavController().navigate(R.id.action_global_setupPinFragment)
+            }
 
             Constants.UNKNOWN_ERROR -> Log.d(
                 "${Constants.COMMON_TAG}: $TAG",

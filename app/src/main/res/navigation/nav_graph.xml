@@ -9,7 +9,14 @@
         android:id="@+id/launchFragment"
         android:name="com.example.bootcamp.ui.LaunchFragment"
         android:label="Launch Fragment"
-        tools:layout="@layout/fragment_launch" />
+        tools:layout="@layout/fragment_launch">
+        <action
+            android:id="@+id/action_launchFragment_to_dashboardFragment"
+            app:destination="@id/dashboardFragment" />
+        <action
+            android:id="@+id/action_launchFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/signInFragment"
@@ -23,13 +30,33 @@
     </fragment>
 
     <action
-        android:id="@+id/action_global_signInFragment"
-        app:destination="@id/signInFragment" />
+        android:id="@+id/action_global_setupPinFragment"
+        app:destination="@id/setupPinFragment" />
 
     <fragment
         android:id="@+id/otpFragment"
         android:name="com.example.bootcamp.ui.OtpFragment"
         android:label="OtpFragment"
-        tools:layout="@layout/fragment_otp" />
+        tools:layout="@layout/fragment_otp">
+
+        <argument
+            android:name="phone"
+            app:argType="string" />
+        <argument
+            android:name="isRegister"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_otpFragment_to_setupPinFragment"
+            app:destination="@id/setupPinFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/setupPinFragment"
+        android:name="com.example.bootcamp.ui.SetupPinFragment"
+        android:label="SetupPinFragment" />
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.example.bootcamp.ui.DashboardFragment"
+        android:label="DashboardFragment" />
 
 </navigation>

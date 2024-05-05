@@ -20,8 +20,7 @@ class UserManager private constructor() {
             }
         }
 
-        fun isLogged(): Boolean = preferenceManager?.getString(KEY_REFRESH_TOKEN, "")
-            .isNullOrBlank()
+        fun isLogged(): Boolean = !refreshToken().isNullOrBlank()
 
         fun getLanguage(): String? = preferenceManager?.getString(KEY_LANGUAGE, null)
 
