@@ -15,6 +15,11 @@ import com.example.bootcamp.databinding.ActivityMainBinding
 import com.example.bootcamp.listener.SimpleClickListener
 import com.example.bootcamp.ui.navigation.TabManager
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,10 +41,66 @@ class MainActivity : AppCompatActivity() {
         external fun apiKey(): String
     }
 
+    data class User(val name: String, val age: Int, val w: Double)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
+//        Firebase.database.reference.child("Ayaz/age")
+//            .setValue(90.0)
+
+//        Firebase.database.reference.child("Ayaz")
+//            .addListenerForSingleValueEvent(object : ValueEventListener {
+//                override fun onDataChange(snapshot: DataSnapshot) {
+//                    Log.d("DDDDDDDDD 1", snapshot.toString())
+//                    Log.d("DDDDDDDDD 2", snapshot.child("age").toString())
+//
+//                    snapshot.children.forEach {
+//                        Log.d("DDDDDDDDD 3", it.value.toString())
+//                    }
+//                }
+//
+//                override fun onCancelled(error: DatabaseError) {
+//
+//                }
+//            })
+
+//        Firebase.database.reference.child("Ayaz")
+//            .addChildEventListener(object : ChildEventListener {
+//                override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+//                    Log.d("DDDDDDDDD 1", snapshot.toString())
+//                }
+//
+//                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+//                    Log.d("DDDDDDDDD 2", snapshot.toString())
+//                }
+//
+//                override fun onChildRemoved(snapshot: DataSnapshot) {
+//                    Log.d("DDDDDDDDD 3", snapshot.toString())
+//                }
+//
+//                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+//                    Log.d("DDDDDDDDD 4", snapshot.toString())
+//                }
+//
+//                override fun onCancelled(error: DatabaseError) {
+//                }
+//            })
+
+//        Firebase.database.reference.child("Ayaz/age").addValueEventListener(object : ValueEventListener {
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                Log.d("DDDDDDDDD 5", snapshot.toString())
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//
+//            }
+//        })
+
+//        Firebase.database.reference.child("Ayaz/age").removeValue()
+
+        Firebase.database.reference.child("Ayaz/age").setValue(45)
 
         Log.d("DDDDDDDDD", add(3, 4).toString())
         Log.d("DDDDDDDDD", subtract(3, 4).toString())

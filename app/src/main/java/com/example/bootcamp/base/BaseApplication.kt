@@ -3,6 +3,7 @@ package com.example.bootcamp.base
 import android.app.Application
 import android.content.Context
 import com.example.data.managers.UserManager
+import com.google.firebase.FirebaseApp
 import dagger.hilt.android.HiltAndroidApp
 
 
@@ -13,6 +14,7 @@ class BaseApplication : Application() {
     }
 
     override fun onCreate() {
+        FirebaseApp.initializeApp(this)
         super.onCreate()
         UserManager.init(applicationContext())
     }
@@ -23,6 +25,5 @@ class BaseApplication : Application() {
         fun applicationContext(): Context {
             return instance!!.applicationContext
         }
-
     }
 }

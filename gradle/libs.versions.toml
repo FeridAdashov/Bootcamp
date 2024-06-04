@@ -1,5 +1,6 @@
 [versions]
 agp = "8.3.2"
+firebaseBom = "33.1.0"
 kotlin = "1.9.23"
 coreKtx = "1.12.0"
 junit = "4.13.2"
@@ -21,9 +22,13 @@ okhttp3 = "4.9.3"
 airsaid_calendarview = "1.0.3"
 material_calendarview = "1.6.0"
 otp_view = "v1.1.2-ktx"
+firebaseCommonKtx = "21.0.0"
+firebaseRoot = "4.4.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-database = {module = "com.google.firebase:firebase-database"}
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -51,6 +56,7 @@ calendar-view-airsaid = { module = "com.github.airsaid:calendarview", version.re
 calendar-view-material = { module = "com.github.prolificinteractive:material-calendarview", version.ref = "material_calendarview" }
 
 otp-view = { module = "com.github.aabhasr1:OtpView", version.ref = "otp_view" }
+firebase-common-ktx = { group = "com.google.firebase", name = "firebase-common-ktx", version.ref = "firebaseCommonKtx" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -63,3 +69,5 @@ navigation-safeargs-kotlin = { id = "androidx.navigation.safeargs.kotlin", versi
 hiltProjectLevel = { id = "com.google.dagger.hilt.android", version.ref = "hiltProjectLevel" }
 
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kapt" }
+
+firebase-root = { id = "com.google.gms.google-services", version.ref = "firebaseRoot" }

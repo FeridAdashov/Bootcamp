@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.hiltProjectLevel)
     alias(libs.plugins.navigation.safeargs)
+    alias(libs.plugins.firebase.root)
 }
 
 android {
@@ -89,6 +90,10 @@ dependencies {
     //Calendar view
 //    implementation(libs.calendar.view.airsaid)
     implementation(libs.calendar.view.material)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.database)
+    implementation(libs.firebase.common.ktx)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
